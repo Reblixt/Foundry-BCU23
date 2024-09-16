@@ -21,6 +21,8 @@ contract Vault {
 
     error Vault__OnlyContractAdmin();
     error Vault__OnlyVaultOwner();
+    error Vault__NoNftsWasProvided();
+    error Vault__DeadlineNotReached();
 
     event VaultCreated(
         uint256 indexed vaultId,
@@ -48,8 +50,9 @@ contract Vault {
     function createVault(
         address nft,
         uint256[] memory nftIds,
-        uint256 deadline
+        uint256 timeLocked
     ) external {
+        if (nftIds.length == 0) revert Vault__NoNftsWasProvided();
         for (uint256 i = 0; i < nftIds.length; i++) {
             IERC721(nft).safeTransferFrom(msg.sender, address(this), nftIds[i]);
         }
@@ -58,15 +61,18 @@ contract Vault {
         vaults[id].owner = msg.sender;
         vaults[id].tokenIds = nftIds;
         vaults[id].nft = IERC721(nft);
-        vaults[id].deadline = block.timestamp + deadline;
+        vaults[id].deadline = block.timestamp + timeLocked;
 
-        emit VaultCreated(id, nftIds, msg.sender, nft, deadline);
+        emit VaultCreated(id, nftIds, msg.sender, nft, timeLocked);
     }
 
     function retrieveNFTs(
         uint256 yourVaultId,
         uint256[] memory tokenIds
     ) external onlyVaultOwner(yourVaultId) {
+        uint256 vaultDeadline = vaults[yourVaultId].deadline;
+        if (block.timestamp < vaultDeadline) revert Vault__DeadlineNotReached();
+
         for (uint256 i = 0; i < tokenIds.length; i++) {
             vaults[yourVaultId].nft.safeTransferFrom(
                 address(this),
