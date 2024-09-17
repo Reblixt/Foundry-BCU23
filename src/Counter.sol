@@ -1,16 +1,19 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.27;
 
 contract Counter {
     uint256 public number;
     string public name;
+
+    error NumberGreaterThanTen();
 
     function setNumber(uint256 newNumber) public {
         number = newNumber;
     }
 
     function increment() public {
-        // if (number >= 10) revert("Number is greater than 10");
+        require(number < 10, NumberGreaterThanTen());
+        // if (number >= 10) revert NumberGreaterThanTen();
         number++;
     }
 

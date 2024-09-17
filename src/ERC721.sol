@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Contracts ^5.0.0
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.27;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -40,8 +40,6 @@ contract BCU23Collection is ERC721, ERC721URIStorage, ERC721Pausable, Ownable {
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
-
-    // The following functions are overrides required by Solidity.
 
     function contractURI() public view returns (string memory) {
         return string.concat("data:application/json;utf8,", contractMetadata);

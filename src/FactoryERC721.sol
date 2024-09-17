@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.27;
 
 import {BCU23Collection} from "./ERC721.sol";
 
@@ -11,7 +11,6 @@ contract FactoryERC721 {
     event CollectionCreated(address owner, uint256 id, address collection);
 
     function createCollection(
-        // address owner,
         string memory contractUri,
         string[] memory uris
     ) public returns (BCU23Collection) {

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.25;
+pragma solidity ^0.8.27;
 
 // import {ERC721Holder, IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract Vault {
     address public contractAdmin;
-    uint256 public vaultId;
+    uint256 public vaultIdCounter;
 
     struct VaultData {
         uint256 vaultId;
@@ -33,13 +33,18 @@ contract Vault {
     );
 
     modifier onlyContractAdmin() {
-        if (msg.sender != contractAdmin) revert Vault__OnlyContractAdmin();
+        require(msg.sender == contractAdmin, Vault__OnlyContractAdmin());
+        // if (msg.sender != contractAdmin) revert Vault__OnlyContractAdmin();
         _;
     }
 
     modifier onlyVaultOwner(uint256 yourVaultId) {
-        if (vaults[yourVaultId].owner != msg.sender)
-            revert Vault__OnlyVaultOwner();
+        // if (vaults[yourVaultId].owner != msg.sender)
+        //     revert Vault__OnlyVaultOwner();
+        require(
+            vaults[yourVaultId].owner == msg.sender,
+            Vault__OnlyVaultOwner()
+        );
         _;
     }
 
@@ -52,12 +57,14 @@ contract Vault {
         uint256[] memory nftIds,
         uint256 timeLocked
     ) external {
-        if (nftIds.length == 0) revert Vault__NoNftsWasProvided();
+        // if (nftIds.length == 0) revert Vault__NoNftsWasProvided();
+        require(nftIds.length > 0, Vault__NoNftsWasProvided());
+
         for (uint256 i = 0; i < nftIds.length; i++) {
             IERC721(nft).safeTransferFrom(msg.sender, address(this), nftIds[i]);
         }
-        uint256 id = ++vaultId;
-        vaults[id].vaultId = vaultId;
+        uint256 id = ++vaultIdCounter;
+        vaults[id].vaultId = vaultIdCounter;
         vaults[id].owner = msg.sender;
         vaults[id].tokenIds = nftIds;
         vaults[id].nft = IERC721(nft);
@@ -80,7 +87,7 @@ contract Vault {
                 tokenIds[i]
             );
         }
-        delete vaults[vaultId];
+        delete vaults[vaultIdCounter];
     }
 
     function getVaultData(
