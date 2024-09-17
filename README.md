@@ -24,11 +24,17 @@ forge --version
 git clone https://github.com/Reblixt/Foundry-BCU23.git
 cd Foundry-BCU23
 ```
+- Jag har installerat paket genom Soldeer some är ett package manager för Solidity. Likt som NPM är för Node.js.
+Jag har installerat detta paket
+```bash
+forge soldeer install @openzeppelin-contracts~5.0.2
+```
 
 2. För att installera paketen som behövs för att kontrakten ska kunna fungera
 ```bash
-forge install foundry-rs/forge-std --no-commit
-forge install OpenZeppelin/openzeppelin-contracts --no-commit
+forge build
+eller 
+forge compile
 ```
 3. Lägg till denna rad i din .env fil plus din Alchemy URL
 ``` file
@@ -36,12 +42,5 @@ ALCHEMY_URL=
 PRIVATE_KEY=
 ```
 
-## Lite Konfiguration pga att vi använder OpenZeppelin
-Lägg till denna rad i foundry.toml för att berätta för Foundrys hur den ska hitta alla kontract för att 
-kompilera dem. Samt för att berätta för Solidity LSPn hur den ska hitta alla kontrakt för att ge autocompletion.
-
-```toml
-remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",]
-```
 ## Resurser
-[OpenZeppelin](https://www.openzeppelin.com/) -- | -- [Cyfrin Updraft](https://updraft.cyfrin.io/) -- | -- [Foundry book](https://book.getfoundry.sh)
+[OpenZeppelin](https://www.openzeppelin.com/) -- | -- [Cyfrin Updraft](https://updraft.cyfrin.io/) -- | -- [Foundry book](https://book.getfoundry.sh) -- | -- [Alchemy](https://dashboard.alchemy.com/) -- | -- [Soldeer](https://soldeer.xyz/)
