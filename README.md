@@ -39,8 +39,13 @@ forge compile
 3. Lägg till denna rad i din .env fil plus din Alchemy URL
 ``` file
 ALCHEMY_URL=
+SEPOLIA_URL=
 PRIVATE_KEY=
 ```
 
+```bash 
+forge script script/DeployERC721.s.sol:DeployERC721 --rpc-url $SEPOLIA_URL
+ --private-key $PRIVATE_KEY --broadcast  
+```
 ## Resurser
 [OpenZeppelin](https://www.openzeppelin.com/) -- | -- [Cyfrin Updraft](https://updraft.cyfrin.io/) -- | -- [Foundry book](https://book.getfoundry.sh) -- | -- [Alchemy](https://dashboard.alchemy.com/) -- | -- [Soldeer](https://soldeer.xyz/)

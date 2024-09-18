@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.27;
 
-// import {ERC721Holder, IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
+import {ERC721Holder, IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract Vault {
+contract Vault is ERC721Holder {
     address public contractAdmin;
     uint256 public vaultIdCounter;
 
@@ -82,9 +82,9 @@ contract Vault {
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
             vaults[yourVaultId].nft.safeTransferFrom(
-                address(this),
-                msg.sender,
-                tokenIds[i]
+                address(this), // från Vault
+                msg.sender, // till msg.sender
+                tokenIds[i] // Vilka tokenIds
             );
         }
         delete vaults[vaultIdCounter];

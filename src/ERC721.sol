@@ -36,7 +36,7 @@ contract BCU23Collection is ERC721, ERC721URIStorage, ERC721Pausable, Ownable {
     }
 
     function safeMint(address to, string memory uri) public onlyOwner {
-        uint256 tokenId = ++_nextTokenId;
+        uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
